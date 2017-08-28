@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Calculadora</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src ="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript">
+            var numberEnter, number = "0", symbolOperation, memory, result;
+
+            function addInNumberEnter(numero) {
+                var resultado = document.getElementById("resultado").value;
+                if (resultado == "0" || numberEnter == "0") {
+                    if (numero != ',') {
+                        numberEnter = numero;
+                    } else {
+                        numberEnter = "0" + numero;
+                    }
+                } else {
+                    numberEnter += "" + numero;
+                }
+                document.getElementById("resultado").value = numberEnter.toString().replace('.', ',');
+            }
+
+            function showTotalOperation() {
+                doOperation();
+                number = result;
+                numberEnter = "0";
+            }
+
+            function addSymbolOperation(operacionEntrante) {
+//                document.getElementById("resultado").value = operacionEntrante;
+                if (number != 0) {
+                    doOperation();
+                    number = result;
+                } else {
+                    number = numberEnter;
+                }
+                symbolOperation = operacionEntrante;
+                numberEnter = "0";
+            }
+
+            function doOperation() {
+                result = eval(number.toString().replace(',', '.') + "" + symbolOperation.toString() + "" + numberEnter.toString().replace(',', '.'));
+                document.getElementById("resultado").value = result.toString().replace('.', ',');
+            }
+
+            function deleteOperation() {
+                number = "0";
+                result = "0";
+                symbolOperation = null;
+                showInResult("0");
+            }
+
+            function deleteLastDigit() {
+                if (numberEnter.length > 1) {
+                    showInResult(numberEnter.substring(0, numberEnter.length - 1));
+                } else {
+                    showInResult(0);
+                }
+            }
+
+            function changeSign() {
+                if (numberEnter.toString().replace(',', '.') >= 0.0) {
+                    alert("Cambia simbolo a negativo" + numberEnter);
+                    var newNum = "-" + numberEnter;
+                    showInResult(newNum);
+                    alert("Se cambio" + numberEnter);
+                } else {
+                    alert("Cambia simbolo a positivo" + numberEnter);
+                    showInResult(numberEnter.replace("-", ""));
+                }
+            }
+
+            function getSquareRoot() {
+                showInResult(Math.sqrt(numberEnter.toString().replace(',', '.')));
+            }
+
+            function getPow() {
+                showInResult(eval(numberEnter.toString().replace(',', '.') + "*" + numberEnter.toString().replace(',', '.')));
+            }
+
+            function getOneOnNumberEnter() {
+                showInResult(eval(1 + "/" + numberEnter.toString().replace(',', '.')));
+            }
+
+            function getPorcent() {
+                if (number != "0" && symbolOperation == "*") {
+                    var firstPart = eval(numberEnter.toString().replace(',', '.') + "*" + number.toString().replace(',', '.'));
+                    var secondPart = eval(firstPart + "/" + 100);
+                    showInResult(secondPart);
+                }
+            }
+
+            function cleanNumberEnter() {
+                showInResult("0");
+            }
+
+            function assignMemory() {
+                memory = numberEnter;
+            }
+
+            function addMemory() {
+                memory += numberEnter;
+            }
+
+            function subtractMemory() {
+                memory -= numberEnter;
+            }
+
+            function showMemory() {
+                showInResult(memory);
+            }
+
+            function cleanMemory() {
+                memory.slice(0, memory.length);
+            }
+
+            function showInResult(newNumber) {
+                numberEnter.slice(0, numberEnter.length);
+                numberEnter = newNumber.toString().replace('.', ',');
+                document.getElementById("resultado").value = numberEnter;
+            }
+        </script>
+        <style>
+            .calculator {
+                font-family: "Calibri"; 
+                width:480px;
+                height:auto;
+                padding:10px 0;
+                margin: auto;
+                background:#EAEDED;
+                border:#000 1px outset;
+                overflow: hidden;
+                text-align: center;
+
+            }
+            .screen {
+                width: 185px; 
+                border: 2px black solid; 
+                text-align: right; 
+                position: relative; 
+                left: 23px;  
+                padding: 0px 5px;
+                background-color: white; 
+                
+                overflow: hidden;
+
+            }
+
+            .title {
+                text-align: left;
+            }
+
+            .table {
+
+                border-collapse: collapse;
+            }
+
+            td {
+                text-align:center;
+            }
+            .otherButtons {
+                background-color: #EAEDED;
+                border: none;
+                color: black;
+                padding: 20px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 12px;
+                width: 12px;
+                height: 12px;
+                cursor: pointer;
+            }
+
+            .operationButtons {
+                background-color: #EAECEE;
+                border: none;
+                color: black;
+                padding: 15px 38px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+
+            .numberButtons {
+
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculator">
+            <div class="title">
+                Estándar
+            </div>
+            <div class="screen">
+                <input type="text" id="resultado" value="0" style="text-align: right" readonly="readonly"/>
+            </div>
+            <div class="table">
+                <table>
+                    <tr>
+                        <td><button class="otherButtons" onclick="cleanMemory()">MC</button></td>
+                        <td><button class="otherButtons" onclick="showMemory()">MR</button></td>
+                        <td><button class="otherButtons" onclick="addMemory()">M+</button></td>
+                        <td><button class="otherButtons" onclick="subtractMemory()">M-</button></td>
+                        <td><button class="otherButtons" onclick="assignMemory()">MS</button></td>
+                        <td><button class="otherButtons">M</button></td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td><button class="operationButtons" onclick="getPorcent()">%</button></td>
+                        <td><button class="operationButtons" onclick="getSquareRoot()">√</button></td>
+                        <td><button class="operationButtons" onclick="getPow()">x²</button></td>
+                        <td><button class="operationButtons" onclick="getOneOnNumberEnter()">1/x</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="operationButtons" onclick="cleanNumberEnter()">CE</button></td>
+                        <td><button class="operationButtons" onclick="deleteOperation()">C</button></td>
+                        <td><button class="operationButtons" onclick="deleteLastDigit()">⌂</button></td>
+                        <td><button class="operationButtons" onclick="addSymbolOperation('/')">÷</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(7)">7</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(8)">8</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(9)">9</button></td>
+                        <td><button class="operationButtons" onclick="addSymbolOperation('*')">x</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(4)">4</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(5)">5</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(6)">6</button></td>
+                        <td><button class="operationButtons" onclick="addSymbolOperation('-')">-</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(1)">1</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(2)">2</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(3)">3</button></td>
+                        <td><button class="operationButtons" onclick="addSymbolOperation('+')">+</button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="operationButtons" onclick="changeSign()">±</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(0)">0</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter(',')">,</button></td>
+                        <td><button class="operationButtons" onclick="showTotalOperation()">=</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
