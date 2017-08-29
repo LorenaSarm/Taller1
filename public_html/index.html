@@ -16,7 +16,7 @@ and open the template in the editor.
             function addInNumberEnter(numero) {
                 var resultado = document.getElementById("resultado").value;
                 if (resultado == "0" || numberEnter == "0") {
-                    if (numero != ',') {
+                    if (numero != '.') {
                         numberEnter = numero;
                     } else {
                         numberEnter = "0.";
@@ -284,7 +284,7 @@ and open the template in the editor.
                     <tr>
                         <td><button class="operationButtons" onclick="changeSign()">±</button></td>
                         <td><button class="numberButtons" onclick="addInNumberEnter(0)">0</button></td>
-                        <td><button class="numberButtons" onclick="addInNumberEnter(',')">,</button></td>
+                        <td><button class="numberButtons" onclick="addInNumberEnter('.')">,</button></td>
                         <td><button class="operationButtons" onclick="showTotalOperation()">=</button></td>
                     </tr>
                 </table>
